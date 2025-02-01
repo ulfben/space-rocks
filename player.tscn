@@ -1,11 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bhyuycdxuetmp"]
+[gd_scene load_steps=4 format=3 uid="uid://bhyuycdxuetmp"]
 
 [ext_resource type="Texture2D" uid="uid://de0p06y7au4ys" path="res://assets/player_ship.png" id="1_2fnua"]
+[ext_resource type="Script" path="res://player.gd" id="1_epcyq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gtey5"]
 radius = 31.0161
 
 [node name="Player" type="RigidBody2D"]
+linear_damp = 1.0
+angular_damp = 5.0
+script = ExtResource("1_epcyq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 rotation = 1.5708
