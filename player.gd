@@ -43,9 +43,9 @@ func get_input():
 		return
 	if Input.is_action_pressed("thrust"):
 		thrust = transform.x * engine_power
-	rotation_dir = Input.get_axis("rotate_left", "rotate_right")
+	rotation_dir = Input.get_axis("rotate_left", "rotate_right")		
 	if can_shoot and Input.is_action_pressed("shoot"):
-		shoot()
+		shoot()     
 
 func shoot():
 	if state == INVULNERABLE:
@@ -69,4 +69,4 @@ func _integrate_forces(physics_state):
 
 
 func _on_gun_cooldown_timeout() -> void:
-	can_shoot = false
+	can_shoot = true
