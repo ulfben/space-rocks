@@ -7,7 +7,7 @@ var score := 0
 var playing := false
 
 func _ready():
-	screensize = get_viewport().get_visible_rect().size
+	screensize = get_viewport().get_visible_rect().size	
 
 func _process(delta):
 	if !playing:
@@ -20,9 +20,9 @@ func new_game():
 	level = 0
 	score = 0
 	$HUD.update_score(score)
-	$HUD.show_message("Get Ready!")	
-	$Player.reset()
+	$HUD.show_message("Get Ready!")		
 	await $HUD/Timer.timeout
+	$Player.reset()
 	playing = true
 
 func game_over():
@@ -48,8 +48,10 @@ func spawn_rock(size, pos=null, vel=null):
 	call_deferred("add_child", r)		
 
 func _on_rock_exploded(size, radius, pos, vel):
+	score += size
+	$HUD.update_score(score)
 	if size <= 1:
-		return
+		return	
 	for offset in [-1, 1]:
 		var dir = $Player.position.direction_to(pos).orthogonal() * offset
 		var newpos = pos + dir * radius

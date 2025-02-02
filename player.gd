@@ -26,10 +26,10 @@ func set_lives(value):
 		change_state(INVULNERABLE)
 
 func reset():
-	reset_pos = true
-	$Sprite2D.show()
+	reset_pos = true	
 	lives = 3
 	change_state(ALIVE)
+	$Sprite2D.show()
 
 func change_state(new_state):
 	match new_state:
@@ -44,15 +44,15 @@ func change_state(new_state):
 	state = new_state
 
 func _ready() -> void:
-	$Sprite2D.hide()
+	$Sprite2D.hide()	
 	screensize = get_viewport_rect().size
 	size = Vector2(
 		$Sprite2D.texture.get_width(),
 		$Sprite2D.texture.get_height()
 	) * $Sprite2D.scale
 	radius = size.x / 2.0
-	$GunCooldown.wait_time = fire_rate
-	change_state(ALIVE)
+	transform.origin = screensize / 2
+	$GunCooldown.wait_time = fire_rate	
 
 func _process(delta: float) -> void:
 	get_input()
