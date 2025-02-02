@@ -17,6 +17,18 @@ var state := INIT
 var size := Vector2.ZERO
 var radius := 0.0
 
+func _ready() -> void:
+	change_state(INIT)
+	screensize = get_viewport_rect().size
+	size = Vector2(
+		$Sprite2D.texture.get_width(),
+		$Sprite2D.texture.get_height()
+	) * $Sprite2D.scale
+	radius = size.x / 2.0
+	transform.origin = screensize / 2
+	$GunCooldown.wait_time = fire_rate	
+
+
 func set_lives(value):
 	lives = value
 	lives_changed.emit(lives)
@@ -33,33 +45,25 @@ func reset():
 
 func change_state(new_state):
 	match new_state:
-		INIT:
+		INIT:		
 			$CollisionShape2D.set_deferred("disabled", true)
 			$Sprite2D.modulate.a = 0.5
-		ALIVE: 
+		ALIVE: 			
 			$CollisionShape2D.set_deferred("disabled", false)
-			$Sprite2D.modulate.a = 1.0
-			$InvulnerabilityTimer.start()
-		INVULNERABLE: 
-			$CollisionShape2D.set_deferred("disabled", true)
+			$Sprite2D.modulate.a = 1.0			
+		INVULNERABLE: 			
+			#disabling the collision shape prevents player rotation!
+			#$CollisionShape2D.set_deferred("disabled", true)
 			$Sprite2D.modulate.a = 0.5
-		DEAD:
+			$InvulnerabilityTimer.start()
+		DEAD:			
 			$CollisionShape2D.set_deferred("disabled", true)
-			$Sprite2d.hide()
+			$Sprite2D.hide()
 			linear_velocity = Vector2.ZERO
+			explode()
 			dead.emit()
+	#print_debug("Changing state to %s" % str(new_state))
 	state = new_state
-
-func _ready() -> void:
-	$Sprite2D.hide()	
-	screensize = get_viewport_rect().size
-	size = Vector2(
-		$Sprite2D.texture.get_width(),
-		$Sprite2D.texture.get_height()
-	) * $Sprite2D.scale
-	radius = size.x / 2.0
-	transform.origin = screensize / 2
-	$GunCooldown.wait_time = fire_rate	
 
 func _process(delta: float) -> void:
 	get_input()
@@ -98,10 +102,21 @@ func _integrate_forces(physics_state):
 	xform.origin.y = wrapf(xform.origin.y, -radius, screensize.y+radius)
 	physics_state.transform = xform
 
-
 func _on_gun_cooldown_timeout() -> void:
 	can_shoot = true
 
-
-func _on_invulnerability_timer_timeout() -> void:
+func _on_invulnerability_timer_timeout() -> void:	
 	change_state(ALIVE)
+
+func _on_body_entered(body: Node) -> void:
+	if state == INVULNERABLE:
+		return
+	if(body.is_in_group("rocks")):
+		body.explode()
+		lives -= 1		
+
+func explode():
+	$Explosion.show()
+	$Explosion/AnimationPlayer.play("explosion")
+	await $Explosion/AnimationPlayer.animation_finished
+	$Explosion.hide()

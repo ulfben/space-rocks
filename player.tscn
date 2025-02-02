@@ -9,6 +9,8 @@
 radius = 31.0161
 
 [node name="Player" type="RigidBody2D"]
+contact_monitor = true
+max_contacts_reported = 1
 linear_damp = 1.0
 angular_damp = 5.0
 script = ExtResource("1_epcyq")
@@ -26,9 +28,8 @@ shape = SubResource("CircleShape2D_gtey5")
 position = Vector2(36, 0)
 
 [node name="GunCooldown" type="Timer" parent="."]
-wait_time = 0.337
+wait_time = 0.25
 one_shot = true
-autostart = true
 
 [node name="Explosion" parent="." instance=ExtResource("4_pin5i")]
 visible = false
@@ -37,5 +38,6 @@ visible = false
 wait_time = 2.0
 one_shot = true
 
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="GunCooldown" to="." method="_on_gun_cooldown_timeout"]
 [connection signal="timeout" from="InvulnerabilityTimer" to="." method="_on_invulnerability_timer_timeout"]

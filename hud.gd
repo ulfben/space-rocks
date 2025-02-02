@@ -20,11 +20,13 @@ func update_lives(value):
 func game_over():
 	show_message("Game Over")
 	await $Timer.timeout
+	message.text = "Space Rocks!"
+	message.show()
 	start_button.show()
 
 func _on_timer_timeout() -> void:
-		message.hide()
-		message.text = ""
+	message.hide()
+	message.text = ""
 
 func _on_start_button_pressed() -> void:
 	start_button.hide()

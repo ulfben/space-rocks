@@ -27,6 +27,7 @@ func new_game():
 
 func game_over():
 	playing = false
+	get_tree().call_group("rocks", "queue_free")	
 	$HUD.game_over()
 
 func next_level():
