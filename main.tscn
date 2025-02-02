@@ -33,4 +33,5 @@ rotation = -0.00519026
 
 [node name="HUD" parent="." instance=ExtResource("5_noiia")]
 
+[connection signal="lives_changed" from="Player" to="HUD" method="update_lives"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]

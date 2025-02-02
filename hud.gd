@@ -25,3 +25,7 @@ func game_over():
 func _on_timer_timeout() -> void:
 		message.hide()
 		message.text = ""
+
+func _on_start_button_pressed() -> void:
+	start_button.hide()
+	start_game.emit()

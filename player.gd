@@ -1,8 +1,13 @@
 extends RigidBody2D
+signal lives_changed
+signal dead
+
 @export var engine_power := 500
 @export var spin_power := 8000
 @export var bullet_scene : PackedScene
 @export var fire_rate := 0.25
+var reset_pos = false
+var lives = 0: set = set_lives
 var can_shoot := true
 var thrust := Vector2.ZERO
 var rotation_dir := 0.0
@@ -11,6 +16,20 @@ enum {INIT, ALIVE, INVULNERABLE, DEAD}
 var state := INIT
 var size := Vector2.ZERO
 var radius := 0.0
+
+func set_lives(value):
+	lives = value
+	lives_changed.emit(lives)
+	if(lives < 1):
+		change_state(DEAD)
+	else:
+		change_state(INVULNERABLE)
+
+func reset():
+	reset_pos = true
+	$Sprite2D.show()
+	lives = 3
+	change_state(ALIVE)
 
 func change_state(new_state):
 	match new_state:
@@ -25,6 +44,7 @@ func change_state(new_state):
 	state = new_state
 
 func _ready() -> void:
+	$Sprite2D.hide()
 	screensize = get_viewport_rect().size
 	size = Vector2(
 		$Sprite2D.texture.get_width(),
@@ -61,6 +81,10 @@ func _physics_process(delta: float) -> void:
 	constant_torque = rotation_dir * spin_power
 	
 func _integrate_forces(physics_state):
+	if reset_pos:
+		physics_state.transform.origin = screensize / 2
+		reset_pos = false
+		return
 	
 	var xform = physics_state.transform	
 	xform.origin.x = wrapf(xform.origin.x, -radius, screensize.x+radius)
