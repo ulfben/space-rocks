@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://mgf0i64bd1p4"]
+[gd_scene load_steps=7 format=3 uid="uid://mgf0i64bd1p4"]
 
 [ext_resource type="Texture2D" uid="uid://8qckas21n6bq" path="res://assets/space_background.png" id="1_hv178"]
 [ext_resource type="Script" path="res://main.gd" id="1_j1gbf"]
 [ext_resource type="PackedScene" uid="uid://bhyuycdxuetmp" path="res://player.tscn" id="2_lg6yp"]
 [ext_resource type="PackedScene" uid="uid://dhc1sgpt2ijw1" path="res://rock.tscn" id="2_qsqly"]
+[ext_resource type="PackedScene" uid="uid://wxjr30vpxucc" path="res://hud.tscn" id="5_noiia"]
 
 [sub_resource type="Curve2D" id="Curve2D_ndijr"]
 _data = {
@@ -29,3 +30,7 @@ curve = SubResource("Curve2D_ndijr")
 [node name="RockSpawn" type="PathFollow2D" parent="RockPath"]
 position = Vector2(57, 47)
 rotation = -0.00519026
+
+[node name="HUD" parent="." instance=ExtResource("5_noiia")]
+
+[connection signal="start_game" from="HUD" to="." method="new_game"]
