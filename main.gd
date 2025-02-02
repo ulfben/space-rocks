@@ -67,7 +67,7 @@ func _input(event):
 		if !playing:
 			return
 		get_tree().paused = !get_tree().paused
-		var message = $HUD/VBoxContainer/Message
+		var message = $HUD/Message
 		if(get_tree().paused):
 			message.text = "Paused"
 			message.show()

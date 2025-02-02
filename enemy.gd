@@ -57,3 +57,5 @@ func explode():
 
 func _on_body_entered(body: Node2D) -> void:	
 	take_damage(1)
+	if(body.name == "Player"):
+		body.shield -= 50
