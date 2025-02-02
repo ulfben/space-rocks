@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://mgf0i64bd1p4"]
+[gd_scene load_steps=8 format=3 uid="uid://mgf0i64bd1p4"]
 
 [ext_resource type="Texture2D" uid="uid://8qckas21n6bq" path="res://assets/space_background.png" id="1_hv178"]
 [ext_resource type="Script" path="res://main.gd" id="1_j1gbf"]
 [ext_resource type="PackedScene" uid="uid://bhyuycdxuetmp" path="res://player.tscn" id="2_lg6yp"]
 [ext_resource type="PackedScene" uid="uid://dhc1sgpt2ijw1" path="res://rock.tscn" id="2_qsqly"]
+[ext_resource type="PackedScene" uid="uid://cqxs42836oajx" path="res://enemy.tscn" id="3_hsoqy"]
 [ext_resource type="PackedScene" uid="uid://wxjr30vpxucc" path="res://hud.tscn" id="5_noiia"]
 
 [sub_resource type="Curve2D" id="Curve2D_ndijr"]
@@ -16,6 +17,7 @@ point_count = 5
 process_mode = 3
 script = ExtResource("1_j1gbf")
 rock_scene = ExtResource("2_qsqly")
+enemy_scene = ExtResource("3_hsoqy")
 
 [node name="Background" type="Sprite2D" parent="."]
 scale = Vector2(0.668229, 0.673148)
@@ -34,6 +36,9 @@ rotation = -0.00519026
 
 [node name="HUD" parent="." instance=ExtResource("5_noiia")]
 
+[node name="EnemyTimer" type="Timer" parent="."]
+
 [connection signal="dead" from="Player" to="." method="game_over"]
 [connection signal="lives_changed" from="Player" to="HUD" method="update_lives"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]
