@@ -3,7 +3,7 @@ extends Area2D
 @export var bullet_scene : PackedScene
 @export var speed = 150
 @export var rotation_speed = 120
-@export var health = 3
+@export var health = 2
 @export var bullet_spread = 0.2
 
 var follow = PathFollow2D.new()
@@ -36,3 +36,24 @@ func shoot_pulse(n, delay):
 	for i in n:
 		shoot()
 		await get_tree().create_timer(delay).timeout
+
+func take_damage(amount):
+	if($AnimationPlayer.is_playing()):
+		return;
+	health -= amount
+	$AnimationPlayer.play("flash")
+	if health <= 0:
+		explode()
+
+func explode():
+	speed = 0
+	$GunCooldown.stop()
+	$CollisionShape2D.set_deferred("disabled", true)
+	$Sprite2D.hide()
+	$Explosion.show()
+	$Explosion/AnimationPlayer.play("explosion")
+	await $Explosion/AnimationPlayer.animation_finished
+	queue_free()
+
+func _on_body_entered(body: Node2D) -> void:	
+	take_damage(1)
