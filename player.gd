@@ -35,12 +35,19 @@ func change_state(new_state):
 	match new_state:
 		INIT:
 			$CollisionShape2D.set_deferred("disabled", true)
+			$Sprite2D.modulate.a = 0.5
 		ALIVE: 
 			$CollisionShape2D.set_deferred("disabled", false)
+			$Sprite2D.modulate.a = 1.0
+			$InvulnerabilityTimer.start()
 		INVULNERABLE: 
 			$CollisionShape2D.set_deferred("disabled", true)
+			$Sprite2D.modulate.a = 0.5
 		DEAD:
 			$CollisionShape2D.set_deferred("disabled", true)
+			$Sprite2d.hide()
+			linear_velocity = Vector2.ZERO
+			dead.emit()
 	state = new_state
 
 func _ready() -> void:
@@ -94,3 +101,7 @@ func _integrate_forces(physics_state):
 
 func _on_gun_cooldown_timeout() -> void:
 	can_shoot = true
+
+
+func _on_invulnerability_timer_timeout() -> void:
+	change_state(ALIVE)
