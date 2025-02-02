@@ -53,7 +53,7 @@ func change_state(new_state):
 			$Sprite2D.modulate.a = 1.0			
 		INVULNERABLE: 			
 			#disabling the collision shape prevents player rotation!
-			#$CollisionShape2D.set_deferred("disabled", true)
+			$CollisionShape2D.set_deferred("disabled", true)
 			$Sprite2D.modulate.a = 0.5
 			$InvulnerabilityTimer.start()
 		DEAD:			

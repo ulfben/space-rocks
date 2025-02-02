@@ -58,3 +58,17 @@ func _on_rock_exploded(size, radius, pos, vel):
 		var newpos = pos + dir * radius
 		var newvel = dir * vel.length() * 1.1
 		spawn_rock(size - 1, newpos, newvel)
+
+
+func _input(event):
+	if event.is_action_pressed("pause"):
+		if !playing:
+			return
+		get_tree().paused = !get_tree().paused
+		var message = $HUD/VBoxContainer/Message
+		if(get_tree().paused):
+			message.text = "Paused"
+			message.show()
+		else:
+			message.text = ""
+			message.hide()
