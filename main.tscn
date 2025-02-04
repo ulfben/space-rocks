@@ -20,12 +20,12 @@ rock_scene = ExtResource("2_qsqly")
 enemy_scene = ExtResource("3_hsoqy")
 
 [node name="Background" type="Sprite2D" parent="."]
-scale = Vector2(0.668229, 0.673148)
+scale = Vector2(0.993, 1)
 texture = ExtResource("1_hv178")
 centered = false
 
 [node name="Player" parent="." instance=ExtResource("2_lg6yp")]
-position = Vector2(560, 316)
+position = Vector2(626, 360)
 
 [node name="RockPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_ndijr")
