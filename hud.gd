@@ -46,3 +46,7 @@ func _on_timer_timeout() -> void:
 func _on_start_button_pressed() -> void:
 	start_button.hide()
 	start_game.emit()
+
+func _input(event):
+	if event.is_action_pressed("start_game") and not event.echo and start_button.visible:
+		_on_start_button_pressed()
