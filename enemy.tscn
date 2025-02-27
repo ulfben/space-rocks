@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://cqxs42836oajx"]
+[gd_scene load_steps=13 format=3 uid="uid://cqxs42836oajx"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_kj48v"]
 [ext_resource type="Texture2D" uid="uid://dc8m0b1xvu6ej" path="res://assets/enemy_saucer.png" id="1_tt44s"]
 [ext_resource type="PackedScene" uid="uid://d1brxy765snws" path="res://enemy_paths.tscn" id="2_32n8l"]
 [ext_resource type="PackedScene" uid="uid://dfgcadv5k0rsp" path="res://enemy_bullet.tscn" id="2_ic42t"]
 [ext_resource type="PackedScene" uid="uid://dfwdqihflemvi" path="res://explosion.tscn" id="3_5sdeq"]
+[ext_resource type="Texture2D" uid="uid://cjgvfocedu2we" path="res://assets/corona.png" id="6_ipsa8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_auh8q"]
 radius = 35.0143
@@ -47,6 +48,13 @@ _data = {
 "flash": SubResource("Animation_i76bs")
 }
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gmpdf"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_gkhxu"]
+_data = [Vector2(0, 0.923077), 0.0, 0.0, 0, 0, Vector2(0.981221, 0.098901), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [node name="Enemy" type="Area2D" groups=["enemies"]]
 script = ExtResource("1_kj48v")
 bullet_scene = ExtResource("2_ic42t")
@@ -72,6 +80,18 @@ visible = false
 [node name="GunCooldown" type="Timer" parent="."]
 wait_time = 2.5
 autostart = true
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_gmpdf")
+amount = 20
+texture = ExtResource("6_ipsa8")
+emission_shape = 1
+emission_sphere_radius = 25.0
+gravity = Vector2(0, 0)
+scale_amount_min = 0.1
+scale_amount_max = 0.1
+scale_amount_curve = SubResource("Curve_gkhxu")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="GunCooldown" to="." method="_on_gun_cooldown_timeout"]
